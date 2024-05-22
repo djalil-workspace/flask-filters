@@ -45,28 +45,23 @@ def AddCustomer():
 
 @app.route("/<string:time>")
 def api(time):
-    match time:
-        case "All":
-            with connect('db.sqlite3') as c:
-                data = c.execute("SELECT * FROM customers").fetchall()
-
-        case "Today":
-            with connect('db.sqlite3') as c:
-                today = datetime.now().date()
-                data = c.execute("SELECT * FROM customers WHERE filter_1 = ? OR filter_2 = ?", (today, today)).fetchall()
-
-        case "Tomorrow":
-            with connect('db.sqlite3') as c:
-                tomorrow = datetime.now().date() + timedelta(days=1)
-                data = c.execute("SELECT * FROM customers WHERE filter_1 = ? OR filter_2 = ?", (tomorrow, tomorrow)).fetchall()
-
-        case "Past":
-            with connect('db.sqlite3') as c:
-                past = datetime.now().date()
-                data = c.execute("SELECT * FROM customers WHERE filter_1 < ? OR filter_2 < ?", (past, past)).fetchall()
-
-        case _:
-            return redirect('/')
+    if time == "All":
+        with connect('db.sqlite3') as c:
+            data = c.execute("SELECT * FROM customers").fetchall()
+    elif time == "Today":
+        with connect('db.sqlite3') as c:
+            today = datetime.now().date()
+            data = c.execute("SELECT * FROM customers WHERE filter_1 = ? OR filter_2 = ?", (today, today)).fetchall()
+    elif time == "Tomorrow":
+        with connect('db.sqlite3') as c:
+            tomorrow = datetime.now().date() + timedelta(days=1)
+            data = c.execute("SELECT * FROM customers WHERE filter_1 = ? OR filter_2 = ?", (tomorrow, tomorrow)).fetchall()
+    elif time == "Past":
+        with connect('db.sqlite3') as c:
+            past = datetime.now().date()
+            data = c.execute("SELECT * FROM customers WHERE filter_1 < ? OR filter_2 < ?", (past, past)).fetchall()
+    else:
+        return redirect('/')
 
     api_data = [
         {
