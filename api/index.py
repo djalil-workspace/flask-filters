@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request, render_template, redirect
 from datetime import date, timedelta, datetime
 from sqlite3 import connect
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 def get_seq() -> int:
