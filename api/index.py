@@ -165,5 +165,13 @@ def delete_user(fullname):
         return {'exception': str(e)}
 
 
+@app.route('/list')
+def user_list():
+    with connect('db.sqlite3') as c:
+        users = c.execute('SELECT * FROM customers').fetchall()
+
+        return jsonify(users)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
