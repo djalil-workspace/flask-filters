@@ -23,7 +23,7 @@ def home():
 
 @app.route('/post', methods=['POST', 'GET'])
 def add_customer():
-    if request.method == 'POST':
+    try:
         user_id = get_seq()
 
         form_fullname  =  request.args.get('fullname')
@@ -45,6 +45,8 @@ def add_customer():
                     )
                 """
             )
+    except Exception as e:
+        return {'exception': e}
 
     return redirect('/All')
 
