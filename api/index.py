@@ -51,11 +51,12 @@ def add_customer():
     return redirect('/All')
 
 
-@app.route('/check/<string:fullname>', methods=['POST', 'GET'])
+@app.route('/check/<string:fullname>')
 def check(fullname):
     try:
         with connect('db.sqlite3') as c:
-            user = c.execute(f'SELECT * FROM customers WHERE fullname="{fullname}"').fetchall()[-1]
+            user = c.execute(f'SELECT * FROM customers WHERE fullname="{fullname}"').fetchall()
+            user = user[len(user)-1]
             
             user_id      =  get_seq()
             filter_date  =  user[2]
